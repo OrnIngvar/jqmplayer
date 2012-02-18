@@ -1,7 +1,10 @@
-/**
- * Created by JetBrains WebStorm.
- * User: davidhalldor
- * Date: 18.2.2012
- * Time: 13:00
- * To change this template use File | Settings | File Templates.
- */
+( function ( $ ) {
+    $.fn.musicPlayer = function( userOpt ){
+        // In this case, "this" refers to the
+        // collection of elements
+
+        return this.each( function( ){
+        // Here, "this" referes to the current elem
+        });
+    };
+}) ( jQuery );

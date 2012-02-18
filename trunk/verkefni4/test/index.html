@@ -1,10 +1,30 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-        "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+    <script src="../src/jquery.mplayer.js"></script>
 </head>
 <body>
+<div id="thePlayer"></div> <!-- this element will host the player!! -->
 
+<p>The latest and greatest music player</p>
+
+<script type="text/javascript" >
+
+    $(document).ready( function( ) {
+
+        // Note: this version assumes a JavaScript array of songs, but
+        // the other approach is also acceptable
+        var playlist = [ "http://path.to/first_song.mp3",
+            "http://path.to/second_song.mp3",
+            "http://path.to/third_song.mp3" ];
+
+        $("#thePlayer").musicPlayer( playlist );
+        // Optionally, the function should accept an object containing optional values,
+        // such as a boolean "autostart" value, i.e. if the player should start playing
+        // immediately etc.
+    });
+
+</script>
 </body>
 </html>
