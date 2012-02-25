@@ -1,4 +1,4 @@
-;( function ( $ ) {
+;(function( $ ) {
     $.fn.musicPlayer = function( playlist, options ) {
 
         var defaults = {
@@ -13,6 +13,9 @@
 
         //The custom made controls for the player
         var controls;
+
+        //The playlist element
+        var player;
 
         //Play/Pause controls of the player
         var playpause;
@@ -38,18 +41,68 @@
             plugin.playlist = playlist;
             playlistLength = playlist.length;
 
-            // Generate html
-            plugin.html('<audio id="audioPlayer"></audio><div id="controls"></div>');
+//            var pluginStyle = ("input { "+
+//                "border: 2px solid #662a1b; /* masked against background until input has focus*/"+
+//                "position: absolute;"+
+//                "background-position: center center;"+
+//                "background-repeat: no-repeat;"+
+//                "};");
 
+            // Generate html
+            plugin.html( //'<style type="text/css">'+pluginStyle+'</style>'+
+                '<div id="playlist"></div>'+
+                    '<audio id="audioPlayer"></audio>'+
+                    '<div id="controls"></div>');
+
+            player = document.getElementById( "playlist" );
             audioElem = document.getElementById( "audioPlayer" );
             controls = document.getElementById( "controls" );
 
-            var controlStyle = "position: relative;border: 2px solid #4c4c4c;background-color: #666666;width: 464px;height: 30px;line-height: 30px;";
-            controls.setAttribute('style', controlStyle);
+//            var controlStyle = "position: relative;border: 2px solid #4c4c4c;"+
+//                "background-color: #662a1b;width: 464px;height: 30px;" +
+//                "line-height: 30px;";
+
+//            controls.setAttribute('style', controlStyle);
+
+            var playlistUL = document.createElement('ul');
+            playlistUL.setAttribute('id','playlist_ul');
+
+            for( i=0; i<playlistLength;i++){
+
+                var playListLI = document.createElement('li');
+                playListLI.setAttribute('id','track'+i);
+                playlistUL.appendChild(playListLI);
+                var playListLink = document.createElement('a');
+                //TODO : Actually play the selected song
+                playListLink.setAttribute('href', '#');
+
+                //TODO : Strip out URL to just display name of file
+                var pickText=document.createTextNode( playlist[i] );
+
+                playListLink.appendChild(pickText);
+                playListLI.appendChild(playListLink);
+            }
+
+            player.appendChild(playlistUL);
+
+            ////////////////////////////////////
+            // Controls
+            ////////////////////////////////////
+            var prevSongStyle = "top: 0px; left: 40px; width: 34px; height: 30px; "+
+                "background-color: transparent; background-image: url('images/audio_rewind.gif');"+
+                "color: transparent; border-right-color: #662a1b;";
+            prevSong = document.createElement('input');
+            prevSong.setAttribute('type','button');
+            prevSong.setAttribute('id','prevSong');
+            prevSong.setAttribute('value','');
+            prevSong.setAttribute('title','Previous');
+            prevSong.setAttribute('style', prevSongStyle);
+            prevSong.setAttribute('accesskey','R');
+            controls.appendChild(prevSong);
 
             var playPauseStyle = "top: 0px; left: 0px; width: 34px; height: 30px; "+
                 "background-color: transparent; background-image: url('images/audio_play.gif');"+
-                "color: transparent; border-right-color: #848484;";
+                "color: transparent; border-right-color: #662a1b;";
             playpause = document.createElement('input');
             playpause.setAttribute('type','button');
             playpause.setAttribute('id','playpause');
@@ -59,30 +112,24 @@
             playpause.setAttribute('accesskey','P');
             controls.appendChild(playpause);
 
-            seekBar = document.createElement('input');
-            seekBar.setAttribute('type','range');
-            seekBar.setAttribute('id','seekBar');
-            seekBar.setAttribute('value','0');
-            seekBar.setAttribute('step','any');
-            controls.appendChild(seekBar);
-
-            //TODO : add image
-            prevSong = document.createElement('input');
-            prevSong.setAttribute('type','button');
-            prevSong.setAttribute('id','prevSong');
-            prevSong.setAttribute('value','');
-            prevSong.setAttribute('title','Previous');
-            prevSong.setAttribute('accesskey','R');
-            controls.appendChild(prevSong);
-
-            //TODO : add image
+            var nextSongStyle = "top: 0px; left: 80px; width: 34px; height: 30px; "+
+                "background-color: transparent; background-image: url('images/audio_forward.gif');"+
+                "color: transparent; border-right-color: #662a1b;";
             nextSong = document.createElement('input');
             nextSong.setAttribute('type','button');
             nextSong.setAttribute('id','nextSong');
             nextSong.setAttribute('value','');
             nextSong.setAttribute('title','Next');
             nextSong.setAttribute('accesskey','F');
+            nextSong.setAttribute('style', nextSongStyle);
             controls.appendChild(nextSong);
+
+            seekBar = document.createElement('input');
+            seekBar.setAttribute('type','range');
+            seekBar.setAttribute('id','seekBar');
+            seekBar.setAttribute('value','0');
+            seekBar.setAttribute('step','any');
+            controls.appendChild(seekBar);
 
             timer = document.createElement('span');
             timer.setAttribute('id','timer');
@@ -129,11 +176,9 @@
 
             audioElem.volume = volume;
 
+            //Duration from Audio gives too much detail, floor it
             duration = Math.floor(audioElem.duration);
-            //Chrome and Safari return NaN for duration until audio.loadedmetadata is true.
-            //Other browsers are able to get duration with 100% reliability in my tests,
-            //AND (interestingly) only Chrome and Safari support audio.loadedmetadata
-            //So, have to assign duration both inside and outside of the following event listener
+            //Chrome and Safari return NaN for duration until audio.loadedmetadata is true
             if (isNaN(duration)) {
                 audioElem.addEventListener('loadedmetadata',function () {
                     duration = audioElem.duration;
@@ -209,8 +254,6 @@
             });
 
             $( nextSong ).bind( 'click', function(){
-                console.log(counter);
-                console.log('pllengt' + playlistLength);
                 if( counter == playlistLength - 1){
                     //Skip to start of playlist since counter is at the end
                     counter = 0;
@@ -218,7 +261,6 @@
                     audioElem.play();
                 }else if( counter < playlistLength - 1){
                     counter = counter + 1;
-                    console.log(counter);
                     audioElem.src = playlist[counter];
                     audioElem.play();
                 }
@@ -253,4 +295,4 @@
         init();
     }
 
-})(jQuery);
+}) (jQuery);
