@@ -17,19 +17,8 @@
         //The playlist element
         var player;
 
-        //Play/Pause controls of the player
-        var playpause;
-        var seekBar;
-        var volumeDown;
-        var volumeUp;
-        var prevSong;
-        var nextSong;
-        var timer;
-        var currentTimeContainer;
-        var currentTime;
-        var duration;
-        var durationContainer;
-        var muteButton;
+        var playpause,seekBar,volumeDown,volumeUp,prevSong,nextSong,timer,currentTimeContainer,currentTime,duration,
+            durationContainer,muteButton;
         var volume=0.5; //0 to 1
         var counter = 0;
         var playlistLength = 0;
@@ -64,22 +53,25 @@
 
 //            controls.setAttribute('style', controlStyle);
 
-            var playlistUL = document.createElement('ul');
+            var playlistUL, playListLI, playListLink, linkText;
+            playlistUL = document.createElement('ul');
+
             playlistUL.setAttribute('id','playlist_ul');
 
-            for( i=0; i<playlistLength;i++){
+            for( var i=0; i<playlistLength; i++){
 
-                var playListLI = document.createElement('li');
+                playListLI = document.createElement('li');
                 playListLI.setAttribute('id','track'+i);
                 playlistUL.appendChild(playListLI);
-                var playListLink = document.createElement('a');
+
+                playListLink = document.createElement('a');
                 //TODO : Actually play the selected song
                 playListLink.setAttribute('href', '#');
 
                 //TODO : Strip out URL to just display name of file
-                var pickText=document.createTextNode( playlist[i] );
+                linkText=document.createTextNode( playlist[i] );
 
-                playListLink.appendChild(pickText);
+                playListLink.appendChild(linkText);
                 playListLI.appendChild(playListLink);
             }
 
@@ -197,22 +189,26 @@
             audioElem.src = playlist[counter];
 
             // Bind events
+            //TODO : get this to work
+            $( playListLink ).bind( 'onclick', function(){
+                play();
+            });
+
             $( audioElem ).bind( 'timeupdate', function(){
                 seekBar.value = audioElem.currentTime;
                 showTime(audioElem.currentTime,currentTimeContainer);
             });
 
+            $( prevSong ).bind( 'click', function(){
+                previous();
+            });
+
             $( playpause ).bind( 'click', function(){
-                if (audioElem.paused || audioElem.ended) {
-                    audioElem.play();
-                    playpause.setAttribute('title','Pause');
-                    playpause.style.backgroundImage="url('images/audio_pause.gif')";
-                }
-                else {
-                    audioElem.pause();
-                    playpause.setAttribute('title','Play');
-                    playpause.style.backgroundImage="url('images/audio_play.gif')";
-                }
+                play();
+            });
+
+            $( nextSong ).bind( 'click', function(){
+                next();
             });
 
             $( volumeUp ).bind( 'click' , function(){
@@ -249,37 +245,50 @@
                 var targetTime = seekBar.value;
                 if (targetTime < duration) {
                     audioElem.currentTime = targetTime;
-                    showTime(targetTime, currentTimeContainer);
+                    plugin.showTime(targetTime, currentTimeContainer);
                 }
             });
+        };
 
-            $( nextSong ).bind( 'click', function(){
-                if( counter == playlistLength - 1){
-                    //Skip to start of playlist since counter is at the end
-                    counter = 0;
-                    audioElem.src = playlist[counter];
-                    audioElem.play();
-                }else if( counter < playlistLength - 1){
-                    counter = counter + 1;
-                    audioElem.src = playlist[counter];
-                    audioElem.play();
-                }
-            });
+        var previous = function(){
+            if( counter === playlistLength - 1){
+                counter = counter - 1;
+                audioElem.src = playlist[counter];
+                play();
+            }else if(counter < playlistLength -1 && counter !== 0){
+                counter = counter - 1;
+                audioElem.src = playlist[counter];
+                play();
+            }
+            else if( counter === 0){
+                //TODO: Disable previous song button
+            }
+        };
 
-            $( prevSong ).bind( 'click', function(){
-                if( counter == playlistLength - 1){
-                    counter = counter - 1;
-                    audioElem.src = playlist[counter];
-                    audioElem.play();
-                }else if(counter < playlistLength -1 && counter != 0){
-                    counter = counter - 1;
-                    audioElem.src = playlist[counter];
-                    audioElem.play();
-                }
-                else if( counter == 0){
-                    //TODO: Disable previous song button
-                }
-            });
+        var play = function(){
+            if (audioElem.paused || audioElem.ended) {
+                audioElem.play();
+                playpause.setAttribute('title','Pause');
+                playpause.style.backgroundImage="url('images/audio_pause.gif')";
+            }
+            else {
+                audioElem.pause();
+                playpause.setAttribute('title','Play');
+                playpause.style.backgroundImage="url('images/audio_play.gif')";
+            }
+        };
+
+        var next = function(){
+            if( counter === playlistLength - 1){
+                //Skip to start of playlist since counter is at the end
+                counter = 0;
+                audioElem.src = playlist[counter];
+                play();
+            }else if( counter < playlistLength - 1){
+                counter = counter + 1;
+                audioElem.src = playlist[counter];
+                play();
+            }
         };
 
         var showTime = function(time,elem) {
