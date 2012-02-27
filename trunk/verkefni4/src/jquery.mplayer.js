@@ -48,7 +48,7 @@
             controls = document.getElementById( "controls" );
 
             var controlStyle = "position: relative;border: 2px solid #4c4c4c;"+
-                "background-color: #662a1b;width: 464px;height: 30px;" +
+                "background-color: #662a1b;width: 504px;height: 30px;" +
                 "line-height: 30px;";
 
             controls.setAttribute('style', controlStyle);
@@ -127,13 +127,13 @@
             seekBar.setAttribute('style', seekBarStyle);
             controls.appendChild(seekBar);
 
-            var timerStyle = "left: 200px; width: 68px; height: 18px; "+
+            var timerStyle = "position:absolute; left: 320px; width: 68px; height: 18px; "+
                 "border-right-color: #662a1b;";
             timer = document.createElement('span');
             timer.setAttribute('id','timer');
             timer.setAttribute('style', timerStyle);
 
-            var currentTimeStyle = "left: 240px;";
+            var currentTimeStyle = "left: 100px;";
             currentTimeContainer = document.createElement('span');
             currentTimeContainer.setAttribute('id','currentTime');
             currentTimeContainer.setAttribute('style', currentTimeStyle);
@@ -148,7 +148,7 @@
             timer.appendChild(durationContainer);
             controls.appendChild(timer);
 
-            var muteButtonsStyle = "left: 360px; top: 0px;width: 34px;height: 30px;background-color: transparent;background-image: url('images/audio_volume.gif');color: transparent;border-left-color: #848484; ";
+            var muteButtonsStyle = "left: 400px; top: 0px;width: 34px;height: 30px;background-color: transparent;background-image: url('images/audio_volume.gif');color: transparent;border-left-color: #848484; ";
             muteButton = document.createElement('input');
             muteButton.setAttribute('type','button');
             muteButton.setAttribute('id','muteButton');
@@ -158,7 +158,7 @@
             muteButton.setAttribute('accesskey','M');
             controls.appendChild(muteButton);
 
-            var volumeUpStyle = "top: 0px;left: 395px;width: 34px;height: 30px;background-color: transparent;background-image: url('images/audio_volumeUp.gif');color: transparent;";
+            var volumeUpStyle = "top: 0px;left: 435px;width: 34px;height: 30px;background-color: transparent;background-image: url('images/audio_volumeUp.gif');color: transparent;";
             volumeUp = document.createElement('input');
             volumeUp.setAttribute('type','button');
             volumeUp.setAttribute('id','volumeUp');
@@ -168,7 +168,7 @@
             volumeUp.setAttribute('accesskey','U');
             controls.appendChild(volumeUp);
 
-            var volumeDownStyle = "top: 0px;left: 430px;width: 34px;height: 30px;background-color: transparent;background-image: url('images/audio_volumeDown.gif');color: transparent;";
+            var volumeDownStyle = "top: 0px;left: 470px;width: 34px;height: 30px;background-color: transparent;background-image: url('images/audio_volumeDown.gif');color: transparent;";
             volumeDown = document.createElement('input');
             volumeDown.setAttribute('type','button');
             volumeDown.setAttribute('id','volumeDown');
