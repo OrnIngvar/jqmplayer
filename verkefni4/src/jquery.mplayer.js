@@ -30,28 +30,28 @@
             plugin.playlist = playlist;
             playlistLength = playlist.length;
 
-//            var pluginStyle = ("input { "+
-//                "border: 2px solid #662a1b; /* masked against background until input has focus*/"+
-//                "position: absolute;"+
-//                "background-position: center center;"+
-//                "background-repeat: no-repeat;"+
-//                "};");
+            var pluginStyle = ("input { "+
+                "border: 2px solid #662a1b; /* masked against background until input has focus*/"+
+                "position: absolute;"+
+                "background-position: center center;"+
+                "background-repeat: no-repeat;"+
+                "};");
 
             // Generate html
-            plugin.html( //'<style type="text/css">'+pluginStyle+'</style>'+
+            plugin.html( '<style type="text/css">'+pluginStyle+'</style>'+
                 '<div id="playlist"></div>'+
-                    '<audio id="audioPlayer"></audio>'+
-                    '<div id="controls"></div>');
+                '<audio id="audioPlayer"></audio>'+
+                '<div id="controls"></div>');
 
             player = document.getElementById( "playlist" );
             audioElem = document.getElementById( "audioPlayer" );
             controls = document.getElementById( "controls" );
 
-//            var controlStyle = "position: relative;border: 2px solid #4c4c4c;"+
-//                "background-color: #662a1b;width: 464px;height: 30px;" +
-//                "line-height: 30px;";
+            var controlStyle = "position: relative;border: 2px solid #4c4c4c;"+
+                "background-color: #662a1b;width: 464px;height: 30px;" +
+                "line-height: 30px;";
 
-//            controls.setAttribute('style', controlStyle);
+            controls.setAttribute('style', controlStyle);
 
             var playlistUL, playListLI, playListLink, linkText;
             playlistUL = document.createElement('ul');
@@ -116,22 +116,34 @@
             nextSong.setAttribute('style', nextSongStyle);
             controls.appendChild(nextSong);
 
+            var seekBarStyle = "top: 0px; left: 120px; width: 180px; height: 30px; "+
+                "background-color: transparent; "+
+                "color: transparent; border-right-color: #662a1b;";
             seekBar = document.createElement('input');
             seekBar.setAttribute('type','range');
             seekBar.setAttribute('id','seekBar');
             seekBar.setAttribute('value','0');
             seekBar.setAttribute('step','any');
+            seekBar.setAttribute('style', seekBarStyle);
             controls.appendChild(seekBar);
 
+            var timerStyle = "left: 200px; width: 68px; height: 18px; "+
+                "border-right-color: #662a1b;";
             timer = document.createElement('span');
             timer.setAttribute('id','timer');
+            timer.setAttribute('style', timerStyle);
+
+            var currentTimeStyle = "left: 240px;";
             currentTimeContainer = document.createElement('span');
             currentTimeContainer.setAttribute('id','currentTime');
+            currentTimeContainer.setAttribute('style', currentTimeStyle);
             var startTime = document.createTextNode('0:00');
             currentTimeContainer.appendChild(startTime);
 
+            var durationStyle = "left: 260px;";
             durationContainer = document.createElement('span');
             durationContainer.setAttribute('id','duration');
+            durationContainer.setAttribute('style', durationStyle);
             timer.appendChild(currentTimeContainer);
             timer.appendChild(durationContainer);
             controls.appendChild(timer);
