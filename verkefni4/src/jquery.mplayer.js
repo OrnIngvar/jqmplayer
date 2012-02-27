@@ -133,14 +133,14 @@
             timer.setAttribute('id','timer');
             timer.setAttribute('style', timerStyle);
 
-            var currentTimeStyle = "left: 100px;";
+            var currentTimeStyle = "left: 100px; color:#FFFFFF";
             currentTimeContainer = document.createElement('span');
             currentTimeContainer.setAttribute('id','currentTime');
             currentTimeContainer.setAttribute('style', currentTimeStyle);
             var startTime = document.createTextNode('0:00');
             currentTimeContainer.appendChild(startTime);
 
-            var durationStyle = "left: 260px;";
+            var durationStyle = "left: 260px; color:#FFFFFF";
             durationContainer = document.createElement('span');
             durationContainer.setAttribute('id','duration');
             durationContainer.setAttribute('style', durationStyle);
