@@ -16,6 +16,7 @@
 
         //The playlist element
         var player;
+        var error;
 
         var playpause,seekBar,volumeDown,volumeUp,prevSong,nextSong,timer,currentTimeContainer,currentTime,duration,
             durationContainer,muteButton;
@@ -46,6 +47,15 @@
             player = document.getElementById( "playlist" );
             audioElem = document.getElementById( "audioPlayer" );
             controls = document.getElementById( "controls" );
+
+            // Fallback if audioPlayer can't play media type
+            if (! audioElem.canPlayType("audio/mpeg")){
+                error = document.createElement('p');
+                var errorText = document.createTextNode(defaults.errorMsg);
+                error.appendChild(errorText);
+                audioElem.appendChild(error);
+                return;
+           }
 
             var controlStyle = "position: relative;border: 2px solid #4c4c4c;"+
                 "background-color: #662a1b;width: 504px;height: 30px;" +
@@ -311,7 +321,6 @@
             if (elem == currentTimeContainer) elem.innerHTML = output;
             else elem.innerHTML = ' / ' + output;
         };
-
         // call the "constructor" method
         init();
     }
